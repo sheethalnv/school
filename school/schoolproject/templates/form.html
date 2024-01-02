@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}" >
+    <title>form</title>
+</head>
+<body>
+<form method="post" id="form1" load_cources="{% url 'school:load_cources' %}">
+    {% csrf_token %}
+<div class="form_class">
+<label>Name</label>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp&nbsp &nbsp &nbsp &nbsp
+<input type="text" name="name" placeholder="name"><br><br>
+    <label>DOB</label>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp
+<input type="date" name="dob"><br><br>
+      <label>Age</label>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+<input type="number" name="age" placeholder="Age"><br><br>
+      <label>Gender</label>&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp  &nbsp&nbsp &nbsp &nbsp &nbsp
+
+    <input type="radio" id="male" name="gender" value="Male">
+<label for="male">Male</label>
+<input type="radio" id="female" name="gender" value="Female">
+<label for="female">Female</label>
+<input type="radio" id="trans" name="gender" value="Transgender">
+<label for="trans">Transgender</label><br><br>
+      <label>Phone Number</label>&nbsp &nbsp &nbsp &nbsp
+<input type="text" name="phnumber" placeholder="phnumber"><br><br>
+      <label>Mail ID</label>&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp
+<input type="email" name="email" placeholder="Email ID"><br><br>
+    <label>Address</label>&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp
+<input type="text" name="address" placeholder="Address"><br><br>
+    <label>Department</label>&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp
+<select id="department" name="department">
+    {% for i in department %}
+    <option value="{{i.pk}}">{{i.name}}</option>
+    {% endfor %}
+</select><br><br>
+        <label>Course</label>&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp&nbsp &nbsp&nbsp&nbsp &nbsp
+<select id="course" name="course">
+    <option value=""></option>
+</select><br><br>
+            <label>Purpose</label>&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp&nbsp &nbsp&nbsp&nbsp
+
+    <select id="purpose" name="purpose">
+    {% for i in purpose %}
+    <option value="{{i.pk}}">{{i.name}}</option>
+    {% endfor %}
+</select><br><br>
+    <center><input type="submit"></center>
+    </div>
+</form>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+    $("#department").change(function(){
+        const url=$("#form1").attr("load_cources");
+        const dep_id=$(this).val();
+
+            $.ajax({
+                url:url,
+                data:{
+                'department':dep_id
+                },
+                success:function(data){
+                console.log(data);
+                $("#course").html(data);
+            }
+        });
+
+    });
+
+
+</script>
+</body>
+</html>
